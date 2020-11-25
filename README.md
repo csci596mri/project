@@ -44,4 +44,21 @@ As part of this project, I am going to train two deep learning models using mult
 - a [VarNet](https://github.com/facebookresearch/fastMRI/tree/master/fastmri_examples/varnet) model on fastMRI knee data, using no extra tricks
 - the same model on the same dataset, but applying a special data augmentation technique tailored to MRI reconstruction (under peer review currently) during training.
 
-Both models will be validated on brain MRI data from the fastMRI dataset. Ideally, I want to demonstrate that the model trained with data augmentation performs better on the unseen brain dataset than the vanilla model. Training curves comparing the two experiments will be submitted as part of the final project.
+Both models will be validated on brain MRI data from the fastMRI dataset. Ideally, I want to demonstrate that the model trained with data augmentation performs better on the unseen brain dataset than the vanilla model. Training curves comparing the two experiments will be submitted as part of the final project. Full source code cannot be shared at this time, since some of the applied techniques are under peer review.
+
+## Software
+- **ML codebase:** PyTorch
+- **Distributed training:** PyTorch Distributed Data Parallel (DDP) with NCCL backend
+- **Wrapper:** [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning)
+
+## Computational resources
+The experiments have been performed on the Discovery cluster at USC on 8xV100 GPUs.
+
+## Experimental results
+After training two models on knee MRI data with and without data augmentation, I evaluated both networks on brain MRI images the networks have never seen during training. The comparison is based on Structural Similarity Index Measure, a popular metric measuring similarity between images that better correlates with the human visual perception of similarity than many other metrics (such as MSE or PSNR).
+
+![](assets/transfer_plot.png)
+
+ The experiments indeed verified that data augmentation improves the robustness of the trained deep learning model against shifts in test distribution. In other words, the neural network trained on augmented data provided higher quality reconstructions on unseen data than the model trained using only the original train dataset.
+
+This important experiment hints at the usefulness of data augmentation not only for deep learning on limited data, but also for deploying models on completely new, previously unseen datasets.
